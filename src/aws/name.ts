@@ -10,12 +10,22 @@ const TEXT = {
   TARGET: 'AutoScalingTarget-%s'
 }
 
-function clean(input: string): string {
-  return truncate(input.replace(/[^a-z0-9+]+/gi, ''))
+const MAX_LENGTH = {
+  // https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html
+  DEFAULT: 255,
+  // https://docs.aws.amazon.com/autoscaling/application/APIReference/API_PutScalingPolicy.html
+  POLICY: 256,
+  // https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-limits.html
+  ROLE: 64
 }
 
-function truncate(input: string): string {
-  return input.length <= 64 ? input : input.substr(0, 32) + md5(input)
+// only truncate if necessary
+function clean(input: string, maxLength: number = Infinity): string {
+  return truncate(input.replace(/[^a-z0-9+]+/gi, ''), maxLength)
+}
+
+function truncate(input: string, maxLength: number = MAX_LENGTH.DEFAULT): string {
+  return input.length <= maxLength ? input : input.substr(0, maxLength - 32) + md5(input)
 }
 
 function ucfirst(data: string): string {
@@ -51,7 +61,8 @@ export default class Name {
 
   public policyRole(): string {
     return clean(
-      this.build(TEXT.POLICYROLE)
+      this.build(TEXT.POLICYROLE),
+      MAX_LENGTH.POLICY
     )
   }
 
@@ -62,7 +73,10 @@ export default class Name {
   }
 
   public role(): string {
-    return clean(this.build(TEXT.ROLE))
+    return clean(
+      this.build(TEXT.ROLE),
+      MAX_LENGTH.ROLE
+    )
   }
 
   public target(read: boolean): string {
@@ -73,7 +87,8 @@ export default class Name {
 
   public policyScale(read: boolean): string {
     return clean(
-      this.build(TEXT.POLICYSCALE, read ? 'Read' : 'Write')
+      this.build(TEXT.POLICYSCALE, read ? 'Read' : 'Write'),
+      MAX_LENGTH.POLICY
     )
   }
 
