@@ -10,11 +10,20 @@ const TEXT = {
     ROLE: 'DynamoDBAutoscaleRole',
     TARGET: 'AutoScalingTarget-%s'
 };
-function clean(input) {
-    return truncate(input.replace(/[^a-z0-9+]+/gi, ''));
+const MAX_LENGTH = {
+    // https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html
+    DEFAULT: 255,
+    // https://docs.aws.amazon.com/autoscaling/application/APIReference/API_PutScalingPolicy.html
+    POLICY: 256,
+    // https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-limits.html
+    ROLE: 64
+};
+// only truncate if necessary
+function clean(input, maxLength = Infinity) {
+    return truncate(input.replace(/[^a-z0-9+]+/gi, ''), maxLength);
 }
-function truncate(input) {
-    return input.length <= 64 ? input : input.substr(0, 32) + md5(input);
+function truncate(input, maxLength = MAX_LENGTH.DEFAULT) {
+    return input.length <= maxLength ? input : input.substr(0, maxLength - 32) + md5(input);
 }
 function ucfirst(data) {
     return data.charAt(0).toUpperCase() + data.slice(1);
@@ -42,20 +51,20 @@ class Name {
         return this.policyScale(false);
     }
     policyRole() {
-        return clean(this.build(TEXT.POLICYROLE));
+        return clean(this.build(TEXT.POLICYROLE), MAX_LENGTH.POLICY);
     }
     dimension(read) {
         const type = this.options.index === '' ? 'table' : 'index';
         return util.format(TEXT.DIMENSION, type, read ? 'Read' : 'Write');
     }
     role() {
-        return clean(this.build(TEXT.ROLE));
+        return clean(this.build(TEXT.ROLE), MAX_LENGTH.ROLE);
     }
     target(read) {
         return clean(this.build(TEXT.TARGET, read ? 'Read' : 'Write'));
     }
     policyScale(read) {
-        return clean(this.build(TEXT.POLICYSCALE, read ? 'Read' : 'Write'));
+        return clean(this.build(TEXT.POLICYSCALE, read ? 'Read' : 'Write'), MAX_LENGTH.POLICY);
     }
     metric(read) {
         return clean(util.format(TEXT.METRIC, read ? 'Read' : 'Write'));
