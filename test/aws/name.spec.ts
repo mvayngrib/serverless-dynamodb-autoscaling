@@ -63,7 +63,8 @@ describe('Name', () => {
     const n = new Name({
       index: '',
       region: 'region',
-      service: 'service-with-a-very-long-name-so-names-are-truncated',
+      // tslint:disable-next-line
+      service: 'service-with-a-very-long-name-so-even-max-256-char-policy-names-are-truncated-and-here-are-some-chars-to-get-there-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
       stage: 'stage',
       table: 'table'
     })
@@ -72,12 +73,17 @@ describe('Name', () => {
       dimension: 'dynamodb:table:WriteCapacityUnits',
       metricRead: 'DynamoDBReadCapacityUtilization',
       metricWrite: 'DynamoDBWriteCapacityUtilization',
-      policyRole: 'servicewithaverylongnamesonamesaeedda6de5ac2172c15c8d808a2cad991',
-      policyScaleRead: 'servicewithaverylongnamesonamesacb30bc3280aa25bf27765929a56ea8d8',
-      policyScaleWrite: 'servicewithaverylongnamesonamesabf6f2d38b9b294af2c6f8e48cc84ec85',
-      role: 'servicewithaverylongnamesonamesa38d8d82ccef5e775fc294d8a83287850',
-      targetRead: 'servicewithaverylongnamesonamesa141748dffb915b1a67abb08496f24e10',
-      targetWrite: 'servicewithaverylongnamesonamesa299bff1b9d70923193990fde7709db57'
+      // tslint:disable-next-line
+      policyRole: 'servicewithaverylongnamesoevenmax256charpolicynamesaretruncatedandherearesomecharstogetthereaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab897d914a5b01dae70987a83fa026d7a',
+      // tslint:disable-next-line
+      policyScaleRead: 'servicewithaverylongnamesoevenmax256charpolicynamesaretruncatedandherearesomecharstogetthereaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa57f12d9a73df590a2ce5ffdf4f01e675',
+      // tslint:disable-next-line
+      policyScaleWrite: 'servicewithaverylongnamesoevenmax256charpolicynamesaretruncatedandherearesomecharstogetthereaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaafa5d47d2764ba5143e0148491245ffba',
+      role: 'servicewithaverylongnamesoevenma0fd19dd5edb88f835c278a1d2f9c5fa0',
+      // tslint:disable-next-line
+      targetRead: 'servicewithaverylongnamesoevenmax256charpolicynamesaretruncatedandherearesomecharstogetthereaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa6c032bdd08f3e85d6bab75fce30aeb42',
+      // tslint:disable-next-line
+      targetWrite: 'servicewithaverylongnamesoevenmax256charpolicynamesaretruncatedandherearesomecharstogetthereaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab1d233668cf726a01d0ded1523e8046c'
     }
 
     using(names, (data, name) => {
