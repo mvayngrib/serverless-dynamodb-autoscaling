@@ -81,7 +81,8 @@ export default class Name {
 
   public target(read: boolean): string {
     return clean(
-      this.build(TEXT.TARGET, read ? 'Read' : 'Write')
+      this.build(TEXT.TARGET, read ? 'Read' : 'Write'),
+      MAX_LENGTH.DEFAULT
     )
   }
 
