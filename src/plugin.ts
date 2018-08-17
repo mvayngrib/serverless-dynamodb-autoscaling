@@ -76,16 +76,20 @@ class AWSDBAutoScaling {
    */
   private defaults(config: Capacity): Defaults {
     return {
-      read: {
-        maximum: config.read && config.read.maximum ? config.read.maximum : 200,
-        minimum: config.read && config.read.minimum ? config.read.minimum : 5,
-        usage: config.read && config.read.usage ? config.read.usage : 0.75
-      },
-      write: {
-        maximum: config.write && config.write.maximum ? config.write.maximum : 200,
-        minimum: config.write && config.write.minimum ? config.write.minimum : 5,
-        usage: config.write && config.write.usage ? config.write.usage : 0.75
-      }
+      read: _.defaults(config.read, {
+        maximum: 200,
+        minimum: 5,
+        scaleIn: 60,
+        scaleOut: 60,
+        usage: 0.75
+      }),
+      write: _.defaults(config.write, {
+        maximum: 200,
+        minimum: 5,
+        scaleIn: 60,
+        scaleOut: 60,
+        usage: 0.75
+      })
     }
   }
 
@@ -133,7 +137,7 @@ class AWSDBAutoScaling {
    */
   private getPolicyAndTarget(options: Options, data: CapacityConfiguration, read: boolean): any[] {
     return [
-      new Policy(options, read, data.usage * 100, 60, 60),
+      new Policy(options, read, data.usage * 100, data.scaleIn, data.scaleOut),
       new Target(options, read, data.minimum, data.maximum)
     ]
   }
