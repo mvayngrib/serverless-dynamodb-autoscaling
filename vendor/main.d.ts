@@ -11,6 +11,8 @@ declare interface CapacityConfiguration {
   maximum: number
   minimum: number
   usage: number
+  scaleIn: number
+  scaleOut: number
 }
 
 declare interface Options {
