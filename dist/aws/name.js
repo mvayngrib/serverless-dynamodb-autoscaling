@@ -61,7 +61,7 @@ class Name {
         return clean(this.build(TEXT.ROLE), MAX_LENGTH.ROLE);
     }
     target(read) {
-        return clean(this.build(TEXT.TARGET, read ? 'Read' : 'Write'));
+        return clean(this.build(TEXT.TARGET, read ? 'Read' : 'Write'), MAX_LENGTH.DEFAULT);
     }
     policyScale(read) {
         return clean(this.build(TEXT.POLICYSCALE, read ? 'Read' : 'Write'), MAX_LENGTH.POLICY);
